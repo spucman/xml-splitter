@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<listElement>
+    <element id="0">
+        <name>name0</name>
+        <address>address0</address>
+        <to>to0</to>
+        <from>from0</from>
+        <email>email0</email>
+        <other>other0</other>
+        <stuff>stuff0</stuff>
+    </element>
+    <element id="1">
+        <name>name1</name>
+        <address>address1</address>
+        <to>to1</to>
+        <from>from1</from>
+        <email>email1</email>
+        <other>other1</other>
+        <stuff>stuff1</stuff>
+    </element>
+    <element id="2">
+        <name>name2</name>
+        <address>address2</address>
+        <to>to2</to>
+        <from>from2</from>
+        <email>email2</email>
+        <other>other2</other>
+        <stuff>stuff2</stuff>
+    </element>
+    <element id="3">
+        <name>name3</name>
+        <address>address3</address>
+        <to>to3</to>
+        <from>from3</from>
+        <email>email3</email>
+        <other>other3</other>
+        <stuff>stuff3</stuff>
+    </element>
+    <element id="4">
+        <name>name4</name>
+        <address>address4</address>
+        <to>to4</to>
+        <from>from4</from>
+        <email>email4</email>
+        <other>other4</other>
+        <stuff>stuff4</stuff>
+    </element>
+    <element id="5">
+        <name>name5</name>
+        <address>address5</address>
+        <to>to5</to>
+        <from>from5</from>
+        <email>email5</email>
+        <other>other5</other>
+        <stuff>stuff5</stuff>
+    </element>
+    <element id="6">
+        <name>name6</name>
+        <address>address6</address>
+        <to>to6</to>
+        <from>from6</from>
+        <email>email6</email>
+        <other>other6</other>
+        <stuff>stuff6</stuff>
+    </element>
+</listElement>

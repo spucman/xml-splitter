@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notes>
+    <!-- this is a note -->
+    <note scope="private">
+        <to>Tove</to>
+        <from>Jani</from>
+        <heading>Reminder</heading>
+        <body><![CDATA[Don't forget me this <b>weekend</b>!]]></body>
+    </note>
+    <note scope="public">
+        <to>Pete</to>
+        <from>Sarah</from>
+        <heading>Urgent</heading>
+        <body><![CDATA[Don't forget me this <b>weekend</b>!]]></body>
+    </note>
+</notes>
