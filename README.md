@@ -1,5 +1,5 @@
 # xml-splitter
-
+[![Build Status](https://travis-ci.org/spucman/xml-splitter.svg?branch=develop)](https://travis-ci.org/spucman/xml-splitter)
 
 ## Latest release
 
