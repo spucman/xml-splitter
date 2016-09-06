@@ -1,6 +1,10 @@
 package com.github.spuchmann.xml.splitter.stax;
 
-
+/**
+ * internal class for providing the current splitting state
+ *
+ * @since 1.0.0
+ */
 public class SplitContext {
 
     private String basename;

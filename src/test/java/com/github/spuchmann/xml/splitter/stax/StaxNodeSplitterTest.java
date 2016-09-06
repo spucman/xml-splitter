@@ -1,6 +1,6 @@
 package com.github.spuchmann.xml.splitter.stax;
 
-import com.github.spuchmann.xml.splitter.XmlDocumentEventHandler;
+import com.github.spuchmann.xml.splitter.XmlSplitException;
 import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class StaxNodeSplitterTest {
     }
 
     @Test
-    public void testSplit() throws XMLStreamException {
+    public void testSplit() throws XMLStreamException, XmlSplitException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int amountOfElements = 5;
 
@@ -58,7 +58,7 @@ public class StaxNodeSplitterTest {
     }
 
     @Test
-    public void testSplitEventHandler() throws XMLStreamException {
+    public void testSplitEventHandler() throws XMLStreamException, XmlSplitException {
         XmlDocumentEventHandler eventHandler = spy(XmlDocumentEventHandler.class);
         splitter.setDocumentEventHandler(eventHandler);
 

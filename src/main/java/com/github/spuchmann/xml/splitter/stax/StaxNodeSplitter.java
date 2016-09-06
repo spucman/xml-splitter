@@ -1,6 +1,6 @@
 package com.github.spuchmann.xml.splitter.stax;
 
-import com.github.spuchmann.xml.splitter.XmlDocumentEventHandler;
+import com.github.spuchmann.xml.splitter.XmlSplitException;
 import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
 import com.github.spuchmann.xml.splitter.XmlSplitter;
 
@@ -17,6 +17,13 @@ import javax.xml.stream.XMLStreamWriter;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
+/**
+ * basic xml splitter implementation which uses stax. As a splitting criteria node names can be configured and taken.
+ *
+ * To hook into the splitting process you can define an eventHandler {@link com.github.spuchmann.xml.splitter.stax.XmlDocumentEventHandler}
+ *
+ * @since 1.0.0
+ */
 public abstract class StaxNodeSplitter implements XmlSplitter {
 
     private XMLInputFactory inputFactory = XMLInputFactory.newFactory();
@@ -29,7 +36,15 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
 
     private XmlReadWriterMapper xmlReadWriterMapper = new XmlReadWriterMapper();
 
-    public XmlSplitStatistic split(String name, InputStream inputStream) throws XMLStreamException {
+    public XmlSplitStatistic split(String name, InputStream inputStream) throws XmlSplitException {
+        try {
+            return doSplit(name, inputStream);
+        } catch (XMLStreamException e) {
+            throw new XmlSplitException("Unable to split " + name, e);
+        }
+    }
+
+    private XmlSplitStatistic doSplit(String name, InputStream inputStream) throws XMLStreamException {
         XmlSplitStatistic xmlSplitStatistic = new XmlSplitStatistic();
 
         XMLStreamReader streamReader = inputFactory.createXMLStreamReader(inputStream);
@@ -81,6 +96,9 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
         return streamWriter;
     }
 
+    /**
+     * provides a new XmlStreamWriter for the processing
+     */
     protected abstract XMLStreamWriter createNewStreamWriter(SplitContext context) throws XMLStreamException;
 
     protected void closeStreamWriter(XMLStreamWriter writer) throws XMLStreamException {

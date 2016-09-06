@@ -1,5 +1,8 @@
 package com.github.spuchmann.xml.splitter.stax;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,7 +10,14 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * file implementation of the node splitter. Every xml fragment will be stored inside a file.
+ *
+ * @since 1.0.0
+ */
 public class FileStaxNodeSplitter extends StaxNodeSplitter {
+
+    private static final Logger log = LoggerFactory.getLogger(FileStaxNodeSplitter.class);
 
     private String outputFolder;
 
@@ -16,6 +26,13 @@ public class FileStaxNodeSplitter extends StaxNodeSplitter {
 
     public FileStaxNodeSplitter(String outputFolder) {
         this.outputFolder = outputFolder;
+    }
+
+    /**
+     * initializes the file splitter (e.g. creating the outputFolder)
+     */
+    public void init() {
+        new File(this.outputFolder).mkdirs();
     }
 
     @Override

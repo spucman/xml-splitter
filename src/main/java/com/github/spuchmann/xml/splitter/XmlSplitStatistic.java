@@ -2,6 +2,11 @@ package com.github.spuchmann.xml.splitter;
 
 import java.util.Date;
 
+/**
+ * statistic object which gets you the base information for doing a split
+ *
+ * @since 1.0.0
+ */
 public class XmlSplitStatistic {
 
     private int count;

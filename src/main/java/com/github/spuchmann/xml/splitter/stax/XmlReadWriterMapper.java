@@ -17,7 +17,11 @@ import static javax.xml.stream.XMLStreamConstants.SPACE;
 import static javax.xml.stream.XMLStreamConstants.START_DOCUMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
-
+/**
+ * stax mapper which maps xml elements, content, attributes from a reader to a writer
+ *
+ * @since 1.0.0
+ */
 public class XmlReadWriterMapper {
 
     private static final Logger log = LoggerFactory.getLogger(XmlReadWriterMapper.class);

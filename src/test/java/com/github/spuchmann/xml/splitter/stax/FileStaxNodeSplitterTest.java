@@ -1,5 +1,6 @@
 package com.github.spuchmann.xml.splitter.stax;
 
+import com.github.spuchmann.xml.splitter.XmlSplitException;
 import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -57,7 +58,7 @@ public class FileStaxNodeSplitterTest {
     }
 
     @Test
-    public void testSplit() throws XMLStreamException, IOException {
+    public void testSplit() throws XMLStreamException, IOException, XmlSplitException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int amountOfElements = 5;
 

@@ -7,6 +7,12 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * in memory split storage. every fragment will be stored inside the memory.
+ * <b>Hint: </b> Make sure you have configured enough memory or just use the FileStaxNodeSplitter
+ *
+ * @since 1.0.0
+ */
 public class InMemoryStaxNodeSplitter extends StaxNodeSplitter {
 
     private List<ByteArrayOutputStream> baosList = new ArrayList<>();
@@ -22,6 +28,9 @@ public class InMemoryStaxNodeSplitter extends StaxNodeSplitter {
         return baosList;
     }
 
+    /**
+     * resets the whole internal storage
+     */
     public void resetResultList() {
         baosList = new ArrayList<>();
     }
