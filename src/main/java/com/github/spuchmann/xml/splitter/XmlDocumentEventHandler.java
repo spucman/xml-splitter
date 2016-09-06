@@ -9,4 +9,6 @@ public interface XmlDocumentEventHandler {
     void afterStartDocument(XMLStreamWriter streamWriter) throws XMLStreamException;
 
     void beforeEndDocument(XMLStreamWriter streamWriter) throws XMLStreamException;
+
+    void finishedDocument();
 }

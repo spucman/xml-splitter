@@ -1,5 +1,7 @@
 package com.github.spuchmann.xml.splitter.stax;
 
+import com.github.spuchmann.xml.splitter.XmlDocumentEventHandler;
+import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlunit.builder.DiffBuilder;
@@ -10,12 +12,19 @@ import java.io.ByteArrayOutputStream;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import static com.github.spuchmann.xml.splitter.stax.XmlTestFileGenerationHelper.LIST_ELEMENT;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class StaxNodeSplitterTest {
+
+    private XmlTestFileGenerationHelper xmlGenerator = new XmlTestFileGenerationHelper();
 
     private InMemoryStaxNodeSplitter splitter;
 
@@ -27,15 +36,15 @@ public class StaxNodeSplitterTest {
 
     @Test
     public void testSplit() throws XMLStreamException {
-        XmlTestFileGenerationHelper xmlGenerator = new XmlTestFileGenerationHelper();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         int amountOfElements = 5;
 
         xmlGenerator.generateTestXml(baos, amountOfElements);
 
-        splitter.split("test1", new ByteArrayInputStream(baos.toByteArray()));
+        XmlSplitStatistic splitStatistic = splitter.split("test1", new ByteArrayInputStream(baos.toByteArray()));
 
         assertThat(splitter.getResultList().size(), is(amountOfElements));
+        assertThat(splitStatistic.getCount(), is(amountOfElements));
 
         for (int i = 0; i < amountOfElements; i++) {
             String generatedXml = new String(splitter.getResultList().get(i).toByteArray());
@@ -45,8 +54,25 @@ public class StaxNodeSplitterTest {
                     .ignoreWhitespace()
                     .build();
             assertThat(diff.toString(), diff.hasDifferences(), is(false));
-
-
         }
+    }
+
+    @Test
+    public void testSplitEventHandler() throws XMLStreamException {
+        XmlDocumentEventHandler eventHandler = spy(XmlDocumentEventHandler.class);
+        splitter.setDocumentEventHandler(eventHandler);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int amountOfElements = 3;
+
+        xmlGenerator.generateTestXml(baos, amountOfElements);
+
+        XmlSplitStatistic splitStatistic = splitter.split("test1", new ByteArrayInputStream(baos.toByteArray()));
+
+        assertThat(splitter.getResultList().size(), is(amountOfElements));
+        assertThat(splitStatistic.getCount(), is(amountOfElements));
+        verify(eventHandler, times(amountOfElements)).afterStartDocument(any(XMLStreamWriter.class));
+        verify(eventHandler, times(amountOfElements)).beforeEndDocument(any(XMLStreamWriter.class));
+        verify(eventHandler, times(amountOfElements)).finishedDocument();
     }
 }

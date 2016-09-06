@@ -1,8 +1,8 @@
 package com.github.spuchmann.xml.splitter.stax;
 
 import com.github.spuchmann.xml.splitter.XmlDocumentEventHandler;
-import com.github.spuchmann.xml.splitter.XmlSplitter;
 import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
+import com.github.spuchmann.xml.splitter.XmlSplitter;
 
 import java.io.InputStream;
 import java.util.Date;
@@ -48,13 +48,14 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
                     if (splittingNodeName.equals(qName)) {
                         closeStreamWriter(streamWriter);
                         streamWriter = null;
+                        finishDocument();
+                        count++;
                         break;
                     }
                 case START_ELEMENT:
                     qName = streamReader.getName();
                     if (splittingNodeName.equals(qName)) {
                         streamWriter = createNewStreamWriter(encoding, version, new SplitContext(name, count));
-                        count++;
                     }
 
                 default:
@@ -91,6 +92,12 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
 
         writer.writeEndDocument();
         writer.close();
+    }
+
+    private void finishDocument() {
+        if (documentEventHandler != null) {
+            documentEventHandler.finishedDocument();
+        }
     }
 
     protected XMLOutputFactory getOutputFactory() {
