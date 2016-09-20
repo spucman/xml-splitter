@@ -78,7 +78,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/spucman/xml-splitter.git</connection>
-        <developerConnection>scm:git:ssh://github.com:spucman/xml-splitter.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com:spucman/xml-splitter.git</developerConnection>
         <url>http://github.com/spucman/xml-splitter/tree/master</url>
     </scm>
 
