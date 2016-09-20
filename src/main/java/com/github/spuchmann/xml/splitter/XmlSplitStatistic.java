@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * statistic object which gets you the base information for doing a split
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class XmlSplitStatistic {
 

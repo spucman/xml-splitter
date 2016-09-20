@@ -20,7 +20,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 /**
  * stax mapper which maps xml elements, content, attributes from a reader to a writer
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class XmlReadWriterMapper {
 

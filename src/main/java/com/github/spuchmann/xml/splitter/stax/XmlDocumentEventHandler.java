@@ -6,7 +6,7 @@ import javax.xml.stream.XMLStreamWriter;
 /**
  * event handler which provides hooks inside the splitting process
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public interface XmlDocumentEventHandler {
 

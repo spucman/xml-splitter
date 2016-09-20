@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamWriter;
 /**
  * Surrounds the splitted xml fragment with the given node
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventHandler {
 

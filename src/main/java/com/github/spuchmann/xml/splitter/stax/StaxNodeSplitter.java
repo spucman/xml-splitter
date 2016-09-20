@@ -22,7 +22,7 @@ import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
  *
  * To hook into the splitting process you can define an eventHandler {@link com.github.spuchmann.xml.splitter.stax.XmlDocumentEventHandler}
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public abstract class StaxNodeSplitter implements XmlSplitter {
 
@@ -53,6 +53,7 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
         XMLStreamWriter streamWriter = null;
         String version = streamReader.getVersion();
         String encoding = streamReader.getEncoding();
+
         while (streamReader.hasNext()) {
             streamReader.next();
             int event = streamReader.getEventType();
@@ -67,27 +68,28 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
                         count++;
                         break;
                     }
+
                 case START_ELEMENT:
                     qName = streamReader.getName();
                     if (splittingNodeName.equals(qName)) {
-                        streamWriter = createNewStreamWriter(encoding, version, new SplitContext(name, count));
+                        streamWriter = createNewStreamWriter(version, new SplitContext(name, count, encoding));
                     }
-
                 default:
-                    if (streamWriter != null) {
-                        xmlReadWriterMapper.map(streamReader, streamWriter);
-                    }
+            }
+            if (streamWriter != null) {
+                xmlReadWriterMapper.map(streamReader, streamWriter);
             }
         }
+
         xmlSplitStatistic.setEndTime(new Date());
         xmlSplitStatistic.setCount(count);
         return xmlSplitStatistic;
     }
 
-    protected XMLStreamWriter createNewStreamWriter(String encoding, String version, SplitContext context)
+    protected XMLStreamWriter createNewStreamWriter(String version, SplitContext context)
             throws XMLStreamException {
         XMLStreamWriter streamWriter = createNewStreamWriter(context);
-        streamWriter.writeStartDocument(encoding, version);
+        streamWriter.writeStartDocument(context.getEncoding(), version);
 
         if (documentEventHandler != null) {
             documentEventHandler.afterStartDocument(streamWriter);
@@ -110,7 +112,10 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
 
         writer.writeEndDocument();
         writer.close();
+        closeInternalStream();
     }
+
+    protected abstract void closeInternalStream();
 
     private void finishDocument() {
         if (documentEventHandler != null) {

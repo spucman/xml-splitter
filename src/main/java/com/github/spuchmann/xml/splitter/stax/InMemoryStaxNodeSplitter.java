@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamWriter;
  * in memory split storage. every fragment will be stored inside the memory.
  * <b>Hint: </b> Make sure you have configured enough memory or just use the FileStaxNodeSplitter
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class InMemoryStaxNodeSplitter extends StaxNodeSplitter {
 
@@ -22,6 +22,11 @@ public class InMemoryStaxNodeSplitter extends StaxNodeSplitter {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baosList.add(baos);
         return getOutputFactory().createXMLStreamWriter(baos);
+    }
+
+    @Override
+    protected void closeInternalStream() {
+        //baos don't needed to be closed
     }
 
     public List<ByteArrayOutputStream> getResultList() {

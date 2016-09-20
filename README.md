@@ -3,7 +3,17 @@
 
 ## Latest release
 
-## Dependencies
+## Requirements
+
+## Installation
+
+### Maven
+
+### Gradle
+
+### Manual
+
+### Dependencies
 
 ## Usage
 

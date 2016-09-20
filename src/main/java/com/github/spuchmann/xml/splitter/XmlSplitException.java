@@ -3,7 +3,7 @@ package com.github.spuchmann.xml.splitter;
 /**
  * root exception for all split operations
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class XmlSplitException extends Exception {
 

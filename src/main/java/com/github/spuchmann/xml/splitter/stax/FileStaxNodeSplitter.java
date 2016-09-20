@@ -13,13 +13,15 @@ import javax.xml.stream.XMLStreamWriter;
 /**
  * file implementation of the node splitter. Every xml fragment will be stored inside a file.
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 public class FileStaxNodeSplitter extends StaxNodeSplitter {
 
     private static final Logger log = LoggerFactory.getLogger(FileStaxNodeSplitter.class);
 
     private String outputFolder;
+
+    private ThreadLocal<FileOutputStream> currentStream = new ThreadLocal<>();
 
     public FileStaxNodeSplitter() {
     }
@@ -37,11 +39,30 @@ public class FileStaxNodeSplitter extends StaxNodeSplitter {
 
     @Override
     protected XMLStreamWriter createNewStreamWriter(SplitContext context) throws XMLStreamException {
+        FileOutputStream fileOutputStream = null;
         try {
-            return getOutputFactory().createXMLStreamWriter(new FileOutputStream(createFile(context)));
-
+            fileOutputStream = new FileOutputStream(createFile(context));
+            currentStream.set(fileOutputStream);
+            return getOutputFactory().createXMLStreamWriter(fileOutputStream, context.getEncoding());
         } catch (IOException e) {
+            tryToCloseStream(fileOutputStream);
             throw new IllegalStateException("Unable to create xml stream writer", e);
+        }
+    }
+
+    @Override
+    protected void closeInternalStream() {
+        tryToCloseStream(currentStream.get());
+        currentStream.set(null);
+    }
+
+    private void tryToCloseStream(FileOutputStream fileOutputStream) {
+        if (fileOutputStream != null) {
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                log.error("Unable to close file stream", e);
+            }
         }
     }
 
