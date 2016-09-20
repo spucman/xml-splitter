@@ -5,7 +5,7 @@
 | Develop | [![Build Status](https://travis-ci.org/spucman/xml-splitter.svg?branch=develop)](https://travis-ci.org/spucman/xml-splitter) |
 
 ## Latest release
-The most recent release is xml-splitter 0.1.0, released December 9, 2015.
+The most recent release is xml-splitter 0.1.0, released September 20, 2016.
 
 ### Maven
 
