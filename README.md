@@ -9,7 +9,19 @@ The most recent release is xml-splitter 0.1.0, released December 9, 2015.
 
 ### Maven
 
+```xml
+<dependency>
+    <groupId>com.github.spucman</groupId>
+    <artifactId>xml-splitter</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+
 ### Gradle
+
+```
+compile 'com.github.spucman:xml-splitter:0.1.0'
+```
 
 ### Manual
 
