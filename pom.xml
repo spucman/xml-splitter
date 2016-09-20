@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.spucman</groupId>
     <artifactId>xml-splitter</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
 
     <name>xml-splitter</name>
     <description>A simple java library which makes it easy to split xml files into fragments.</description>
@@ -80,7 +78,8 @@
         <connection>scm:git:git://github.com/spucman/xml-splitter.git</connection>
         <developerConnection>scm:git:git@github.com:spucman/xml-splitter.git</developerConnection>
         <url>http://github.com/spucman/xml-splitter/tree/master</url>
-    </scm>
+      <tag>xml-splitter-0.1.0</tag>
+  </scm>
 
     <developers>
         <developer>
