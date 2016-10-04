@@ -3,6 +3,13 @@
 In the following sections you will find an overview of historical releases and
 what major changes where part of them.
 
+## 0.2.0
+
+### Added
+
+* Enhanced documentation
+* Added collected of data which is not in split nodes
+
 ## 0.1.0
 
 ### Added

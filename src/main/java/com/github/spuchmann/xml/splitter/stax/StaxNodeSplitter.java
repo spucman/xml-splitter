@@ -5,7 +5,11 @@ import com.github.spuchmann.xml.splitter.XmlSplitStatistic;
 import com.github.spuchmann.xml.splitter.XmlSplitter;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -14,6 +18,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import static javax.xml.stream.XMLStreamConstants.CHARACTERS;
 import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
 
@@ -36,6 +41,8 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
 
     private XmlReadWriterMapper xmlReadWriterMapper = new XmlReadWriterMapper();
 
+    private List<QName> globalDataCollectorNameList = new ArrayList<>();
+
     public XmlSplitStatistic split(String name, InputStream inputStream) throws XmlSplitException {
         try {
             return doSplit(name, inputStream);
@@ -54,10 +61,17 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
         String version = streamReader.getVersion();
         String encoding = streamReader.getEncoding();
 
+        SplitContextBuilder splitContextBuilder = SplitContextBuilder.newBuilder()
+                .basename(name)
+                .encoding(encoding);
+
+        Map<QName, String> globalDataCollector = new HashMap<>();
+        boolean collect = false;
+        QName currentName = null;
+        
         while (streamReader.hasNext()) {
             streamReader.next();
             int event = streamReader.getEventType();
-
             switch (event) {
                 case END_ELEMENT:
                     QName qName = streamReader.getName();
@@ -68,12 +82,24 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
                         count++;
                         break;
                     }
-
+                case CHARACTERS:
+                    if (collect) {
+                        globalDataCollector.put(currentName, streamReader.getText());
+                        currentName = null;
+                        collect = false;
+                    }
+                    break;
                 case START_ELEMENT:
                     qName = streamReader.getName();
                     if (splittingNodeName.equals(qName)) {
-                        streamWriter = createNewStreamWriter(version, new SplitContext(name, count, encoding));
+                        splitContextBuilder.currentCount(count)
+                                .collectedData(globalDataCollector);
+                        streamWriter = createNewStreamWriter(version, splitContextBuilder.build());
+                    } else if (globalDataCollectorNameList.contains(qName)) {
+                        currentName = qName;
+                        collect = true;
                     }
+
                 default:
             }
             if (streamWriter != null) {
@@ -92,7 +118,7 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
         streamWriter.writeStartDocument(context.getEncoding(), version);
 
         if (documentEventHandler != null) {
-            documentEventHandler.afterStartDocument(streamWriter);
+            documentEventHandler.afterStartDocument(streamWriter, context);
         }
 
         return streamWriter;
@@ -145,5 +171,17 @@ public abstract class StaxNodeSplitter implements XmlSplitter {
 
     public void setXmlReadWriterMapper(XmlReadWriterMapper xmlReadWriterMapper) {
         this.xmlReadWriterMapper = xmlReadWriterMapper;
+    }
+
+    public List<QName> getGlobalDataCollectorNameList() {
+        return globalDataCollectorNameList;
+    }
+
+    /**
+     * sets the QNames of all nodes where data should be collected from - data can only collected outside from split
+     * nodes
+     */
+    public void setGlobalDataCollectorNameList(List<QName> globalDataCollectorNameList) {
+        this.globalDataCollectorNameList = globalDataCollectorNameList;
     }
 }

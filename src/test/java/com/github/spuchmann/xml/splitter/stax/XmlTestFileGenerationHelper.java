@@ -24,6 +24,9 @@ public class XmlTestFileGenerationHelper {
         streamWriter.writeStartDocument("UTF-8", "1.0");
         streamWriter.writeStartElement(ROOT_ELEMENT);
 
+        writeElement(streamWriter, "global", "globalValue");
+        writeElement(streamWriter, "global1", "globalValue1");
+
         for (int i = 0; i < amountOfElements; i++) {
             writeElement(streamWriter, i);
         }

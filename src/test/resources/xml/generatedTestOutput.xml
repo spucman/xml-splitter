@@ -1,6 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <listElement>
+    <global>globalValue</global>
+    <global1>globalValue1</global1>
     <element id="0">
         <name>name0</name>
         <address>address0</address>

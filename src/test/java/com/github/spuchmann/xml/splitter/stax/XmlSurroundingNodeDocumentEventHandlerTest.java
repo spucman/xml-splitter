@@ -52,7 +52,7 @@ public class XmlSurroundingNodeDocumentEventHandlerTest {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         XMLStreamWriter writer = createStreamWriter(os);
         eventHandler.setNode(node);
-        eventHandler.afterStartDocument(writer);
+        eventHandler.afterStartDocument(writer, new SplitContext());
         eventHandler.beforeEndDocument(writer);
         closeDocument(writer);
 

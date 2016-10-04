@@ -9,6 +9,9 @@ import org.xmlunit.diff.Diff;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -71,8 +74,32 @@ public class StaxNodeSplitterTest {
 
         assertThat(splitter.getResultList().size(), is(amountOfElements));
         assertThat(splitStatistic.getCount(), is(amountOfElements));
-        verify(eventHandler, times(amountOfElements)).afterStartDocument(any(XMLStreamWriter.class));
+        verify(eventHandler, times(amountOfElements))
+                .afterStartDocument(any(XMLStreamWriter.class), any(SplitContext.class));
         verify(eventHandler, times(amountOfElements)).beforeEndDocument(any(XMLStreamWriter.class));
         verify(eventHandler, times(amountOfElements)).finishedDocument();
+    }
+
+    @Test
+    public void testCollectGlobalData() throws XMLStreamException, XmlSplitException {
+        TestContextSavingDocumentEventHandler handler = new TestContextSavingDocumentEventHandler();
+        splitter.setDocumentEventHandler(handler);
+
+        List<QName> collectDataList = new ArrayList<>();
+        collectDataList.add(new QName("global"));
+        collectDataList.add(new QName("global1"));
+        splitter.setGlobalDataCollectorNameList(collectDataList);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        int amountOfElements = 3;
+
+        xmlGenerator.generateTestXml(baos, amountOfElements);
+
+        splitter.split("test1", new ByteArrayInputStream(baos.toByteArray()));
+
+        Map<QName, String> collectedData = handler.getSplitContext().getCollectedData();
+
+        assertThat(collectedData.size(), is(2));
+        assertThat(collectedData.get(new QName("global1")), is("globalValue1"));
     }
 }

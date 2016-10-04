@@ -12,8 +12,10 @@ public interface XmlDocumentEventHandler {
 
     /**
      * will be called after the document and the xml header is written
+     *
+     * @since 0.2.0
      */
-    void afterStartDocument(XMLStreamWriter streamWriter) throws XMLStreamException;
+    void afterStartDocument(XMLStreamWriter streamWriter, SplitContext context) throws XMLStreamException;
 
     /**
      * will be called before the document ends and will be closed

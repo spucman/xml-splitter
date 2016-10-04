@@ -21,7 +21,7 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
     }
 
     @Override
-    public void afterStartDocument(XMLStreamWriter streamWriter) throws XMLStreamException {
+    public void afterStartDocument(XMLStreamWriter streamWriter, SplitContext context) throws XMLStreamException {
         streamWriter.writeStartElement(node.getPrefix(), node.getLocalPart(), node.getNamespaceURI());
 
         if (isNotNullOrEmpty(node.getNamespaceURI())) {

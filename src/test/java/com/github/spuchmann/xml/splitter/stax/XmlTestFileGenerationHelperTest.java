@@ -20,7 +20,6 @@ public class XmlTestFileGenerationHelperTest {
     public void generateTestXml() throws XMLStreamException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         generationHelper.generateTestXml(os, 7);
-
         Diff diff = DiffBuilder.compare(os.toByteArray())
                 .withTest(getResourceAsStream("/xml/generatedTestOutput.xml"))
                 .checkForSimilar()

@@ -25,12 +25,13 @@ compile 'com.github.spucman:xml-splitter:0.1.0'
 
 ### Manual
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.spucman/xml-splitter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.spucman/xml-splitter)
+Download the latest release from the maven central repository and add the jar file to you classpath.
+
 ## Requirements
 
-## Installation
-
-
-### Dependencies
+xml-splitter is compiled against JDK7+ and has only slf4j as a required dependency.
+Nevertheless it is recommended to use woodstox as a stax implementation.
 
 ## Usage
 

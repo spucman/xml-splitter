@@ -1,5 +1,9 @@
 package com.github.spuchmann.xml.splitter.stax;
 
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
 /**
  * internal class for providing the current splitting state
  *
@@ -12,6 +16,8 @@ public class SplitContext {
     private int currentCount;
 
     private String encoding;
+
+    private Map<QName, String> collectedData;
 
     public SplitContext() {
 
@@ -49,5 +55,13 @@ public class SplitContext {
 
     public void setEncoding(String encoding) {
         this.encoding = encoding;
+    }
+
+    public Map<QName, String> getCollectedData() {
+        return collectedData;
+    }
+
+    public void setCollectedData(Map<QName, String> collectedData) {
+        this.collectedData = collectedData;
     }
 }
