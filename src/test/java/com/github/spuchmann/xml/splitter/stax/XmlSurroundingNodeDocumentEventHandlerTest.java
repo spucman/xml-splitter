@@ -4,14 +4,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import static org.hamcrest.core.Is.is;
+import static com.github.spuchmann.xml.splitter.stax.StaxXmlTestHelper.closeDocument;
+import static com.github.spuchmann.xml.splitter.stax.StaxXmlTestHelper.createStreamWriter;
 import static org.junit.Assert.assertThat;
 import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
@@ -27,18 +26,9 @@ public class XmlSurroundingNodeDocumentEventHandlerTest {
 
     private XmlSurroundingNodeDocumentEventHandler eventHandler;
 
-    private XMLOutputFactory outputFactory = XMLOutputFactory.newFactory();
-
     @Before
     public void before() {
         eventHandler = new XmlSurroundingNodeDocumentEventHandler();
-    }
-
-    @Test
-    public void testIsNotNullOrEmpty() {
-        assertThat(eventHandler.isNotNullOrEmpty(null), is(false));
-        assertThat(eventHandler.isNotNullOrEmpty(""), is(false));
-        assertThat(eventHandler.isNotNullOrEmpty("test"), is(true));
     }
 
     @Test
@@ -57,19 +47,6 @@ public class XmlSurroundingNodeDocumentEventHandlerTest {
         closeDocument(writer);
 
         assertThat(new String(os.toByteArray()), isSimilarTo(result));
-    }
-
-    private XMLStreamWriter createStreamWriter(OutputStream os) throws XMLStreamException {
-        XMLStreamWriter streamWriter = outputFactory.createXMLStreamWriter(os);
-
-        streamWriter.writeStartDocument("UTF-8", "1.0");
-        streamWriter.writeStartElement("root");
-        return streamWriter;
-    }
-
-    private void closeDocument(XMLStreamWriter streamWriter) throws XMLStreamException {
-        streamWriter.writeEndElement();
-        streamWriter.writeEndDocument();
     }
 }
 

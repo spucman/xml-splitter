@@ -1,8 +1,15 @@
 package com.github.spuchmann.xml.splitter.stax;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
+import static com.github.spuchmann.xml.splitter.stax.StaxXmlHelper.writeXmlElementWithNamespace;
+import static com.github.spuchmann.xml.splitter.stax.StaxXmlHelper.writeXmlStartElementWithNamespace;
+import static com.github.spuchmann.xml.splitter.utils.CommonUtils.isNotNullOrEmpty;
 
 /**
  * Surrounds the splitted xml fragment with the given node
@@ -13,6 +20,8 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
 
     private QName node;
 
+    private List<QName> globalValueList;
+
     public XmlSurroundingNodeDocumentEventHandler() {
     }
 
@@ -22,18 +31,18 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
 
     @Override
     public void afterStartDocument(XMLStreamWriter streamWriter, SplitContext context) throws XMLStreamException {
-        streamWriter.writeStartElement(node.getPrefix(), node.getLocalPart(), node.getNamespaceURI());
-
-        if (isNotNullOrEmpty(node.getNamespaceURI())) {
-            writeNamespace(streamWriter, node);
-        }
+        writeGlobalValuesIfNecessary(streamWriter, context);
+        writeXmlStartElementWithNamespace(streamWriter, node);
     }
 
-    private void writeNamespace(XMLStreamWriter streamWriter, QName node) throws XMLStreamException {
-        if (isNotNullOrEmpty(node.getPrefix())) {
-            streamWriter.writeNamespace(node.getPrefix(), node.getNamespaceURI());
-        } else {
-            streamWriter.writeDefaultNamespace(node.getNamespaceURI());
+    private void writeGlobalValuesIfNecessary(XMLStreamWriter streamWriter, SplitContext context)
+            throws XMLStreamException {
+        Map<QName, String> collectedData = context.getCollectedData();
+        if (isNotNullOrEmpty(globalValueList) && isNotNullOrEmpty(collectedData)) {
+            for (QName qName : globalValueList) {
+                String value = collectedData.get(qName);
+                writeXmlElementWithNamespace(streamWriter, qName, value);
+            }
         }
     }
 
@@ -47,8 +56,11 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
 
     }
 
-    protected boolean isNotNullOrEmpty(String value) {
-        return value != null ? !value.isEmpty() : false;
+    /**
+     * @since 0.2.0
+     */
+    public void setGlobalValueList(List<QName> globalValueList) {
+        this.globalValueList = globalValueList;
     }
 
     public QName getNode() {
