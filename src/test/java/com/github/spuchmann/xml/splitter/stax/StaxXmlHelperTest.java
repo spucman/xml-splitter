@@ -32,9 +32,10 @@ public class StaxXmlHelperTest {
 
     @Test
     public void testWriteXmlElementWithNamespace() throws XMLStreamException {
-        testWriteXmlElementWithNamespace(new QName("tag"), null, RESULT_WITHOUT_VALUE);
-        testWriteXmlElementWithNamespace(new QName("tag"), "", RESULT_WITHOUT_VALUE);
-        testWriteXmlElementWithNamespace(new QName("tag"), "value", RESULT_WITHOUT_NAMESPACE);
+        QName tagName = new QName("tag");
+        testWriteXmlElementWithNamespace(tagName, null, RESULT_WITHOUT_VALUE);
+        testWriteXmlElementWithNamespace(tagName, "", RESULT_WITHOUT_VALUE);
+        testWriteXmlElementWithNamespace(tagName, "value", RESULT_WITHOUT_NAMESPACE);
         testWriteXmlElementWithNamespace(new QName("http://test.uri", "tag", "ns"), "value", RESULT_WITH_NAMESPACE);
     }
 
@@ -46,9 +47,9 @@ public class StaxXmlHelperTest {
     }
 
     @Test
-    public void testWriteXmlNamespace() throws XMLStreamException{
-        String xml = testWriteXmlNamespace(new QName("http://test.uri", "tag"), "<?xml version='1.0' encoding='UTF-8'?><root xmlns=\"http://test.uri\"/>");
-        //TODO: verify
+    public void testWriteXmlNamespace() throws XMLStreamException {
+        String xml = testWriteXmlNamespace(new QName("http://test.uri", "tag"),
+                "<?xml version='1.0' encoding='UTF-8'?><root xmlns=\"http://test.uri\"/>");
         assertThat(xml, hasXPath("namespace-uri(/*)", equalTo("http://test.uri")));
     }
 

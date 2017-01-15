@@ -12,7 +12,7 @@ import java.util.Map;
 public final class CommonUtils {
 
     private CommonUtils() {
-
+        //hidden constructor
     }
 
     public static boolean isNotNullOrEmpty(String value) {

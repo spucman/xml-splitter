@@ -15,6 +15,7 @@ import static com.github.spuchmann.xml.splitter.utils.CommonUtils.isNotNullOrEmp
 public final class StaxXmlHelper {
 
     private StaxXmlHelper() {
+        //hidden constructor
     }
 
     /**
