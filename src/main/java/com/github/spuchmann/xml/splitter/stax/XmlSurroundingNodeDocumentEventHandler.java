@@ -31,8 +31,8 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
 
     @Override
     public void afterStartDocument(XMLStreamWriter streamWriter, SplitContext context) throws XMLStreamException {
-        writeGlobalValuesIfNecessary(streamWriter, context);
         writeXmlStartElementWithNamespace(streamWriter, node);
+        writeGlobalValuesIfNecessary(streamWriter, context);
     }
 
     private void writeGlobalValuesIfNecessary(XMLStreamWriter streamWriter, SplitContext context)
@@ -57,6 +57,8 @@ public class XmlSurroundingNodeDocumentEventHandler implements XmlDocumentEventH
     }
 
     /**
+     * list of qnames which should be added through this handle (the qnames must be collected and also be configured
+     * at a splitting level)
      * @since 0.2.0
      */
     public void setGlobalValueList(List<QName> globalValueList) {
