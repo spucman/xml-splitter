@@ -246,7 +246,7 @@ convenience we are defining the all xml node beforehand and will just be referen
 ```
 
 #### Simple Splitting by node
-For a detailed explanation of this sample look at the [java configuration section](#simple-splittinge).
+For a detailed explanation of this sample look at the [java configuration section](#simple-splitting).
 
 ```xml
 <bean id="simpleFileStaxNodeSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter" init-method="init">
