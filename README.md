@@ -97,7 +97,7 @@ We have a simple list of elements which also contains some arbitrary attributes 
 
 ### Java
 
-#### Simple Splitting by node
+#### <a name="simple-splitting"></a>Simple Splitting by node
 If we want to split up the node sample from the beginning, we can just configure the xml-splitter
 like this:
 
@@ -139,7 +139,7 @@ The gernated output will look like following:
 The filename is simply the the number of the list element, so in this case the filename would
 be `simpleElementSplit_0.xml`
 
-#### Simple Splitting by node with surrounding elements
+#### <a name="splitting-with-surrounding-elements"></a>Simple Splitting by node with surrounding elements
 If you want to use the same xml structure you used before you split you can also do that
 in a very simple way:
 
@@ -179,7 +179,7 @@ Now our xml will look like this:
 </parentElement>
 ```
 
-#### Simple Splitting by node with surrounding elements and global values
+#### <a name="splitting-with-global-values"></a>Simple Splitting by node with surrounding elements and global values
 Sometimes you are in the mess that despite of splitting you must provide to each result element
 additional information of a higher level in your xml tree.
 
@@ -224,6 +224,77 @@ So if we are no looking at our new results it looks like following:
 ```
 
 ### Usage with Spring
+This section will briefly covers the same configuration we have done before with java via spring xml files. Just for 
+convenience we are defining the all xml node beforehand and will just be referenced in the different sections.
+
+```xml
+<bean id="globalValue" class="javax.xml.namespace.QName">
+    <constructor-arg name="localPart" value="global"/>
+</bean>
+
+<bean id="globalValue1" class="javax.xml.namespace.QName">
+    <constructor-arg name="localPart" value="global1"/>
+</bean>
+
+<bean id="tagElement" class="javax.xml.namespace.QName">
+    <constructor-arg name="localPart" value="element"/>
+</bean>
+
+<bean id="tagParentElement" class="javax.xml.namespace.QName">
+    <constructor-arg name="localPart" value="parentElement"/>
+</bean>
+```
+
+#### Simple Splitting by node
+For a detailed explanation of this sample look at the [java configuration section](#simple-splittinge).
+
+```xml
+<bean id="simpleFileStaxNodeSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter" init-method="init">
+    <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+    <property name="splittingNodeName" ref="tagElement"/>
+</bean>
+```
+
+#### Simple Splitting by node with surrounding elements
+For a detailed explanation of this sample look at the [java configuration section](#splitting-with-surrounding-elements).
+```xml
+<bean id="surroundingFileStaxNodeSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter"
+      init-method="init">
+    <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+    <property name="splittingNodeName" ref="tagElement"/>
+    <property name="documentEventHandler">
+        <bean class="com.github.spuchmann.xml.splitter.stax.XmlSurroundingNodeDocumentEventHandler">
+            <property name="node" ref="tagParentElement"/>
+        </bean>
+    </property>
+</bean>
+```
+
+#### Simple Splitting by node with surrounding elements and global values
+For a detailed explanation of this sample look at the [java configuration section](#splitting-with-global-values).
+```xml
+<bean id="globalValueFileStaxSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter"
+      init-method="init">
+    <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+    <property name="splittingNodeName" ref="tagElement"/>
+    <property name="globalDataCollectorNameList">
+        <list>
+            <ref bean="globalValue"/>
+            <ref bean="globalValue1"/>
+        </list>
+    </property>
+    <property name="documentEventHandler">
+        <bean class="com.github.spuchmann.xml.splitter.stax.XmlSurroundingNodeDocumentEventHandler">
+            <property name="node" ref="tagParentElement"/>
+            <property name="globalValueList">
+                <list>
+                    <ref bean="globalValue1"/>
+                </list>
+            </property>
+        </bean>
+    </property>
+</bean>
+```
 
 ## License
 The xml-splitter is released under version 2.0 of the [Apache License][].

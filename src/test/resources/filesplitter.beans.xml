@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- QNAMES -->
+    <bean id="globalValue" class="javax.xml.namespace.QName">
+        <constructor-arg name="localPart" value="global"/>
+    </bean>
+
+    <bean id="globalValue1" class="javax.xml.namespace.QName">
+        <constructor-arg name="localPart" value="global1"/>
+    </bean>
+
+    <bean id="tagElement" class="javax.xml.namespace.QName">
+        <constructor-arg name="localPart" value="element"/>
+    </bean>
+
+    <bean id="tagParentElement" class="javax.xml.namespace.QName">
+        <constructor-arg name="localPart" value="parentElement"/>
+    </bean>
+
+    <!-- sample configurations -->
+
+    <bean id="simpleFileStaxNodeSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter"
+          init-method="init">
+        <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+        <property name="splittingNodeName" ref="tagElement"/>
+    </bean>
+
+    <bean id="surroundingFileStaxNodeSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter"
+          init-method="init">
+        <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+        <property name="splittingNodeName" ref="tagElement"/>
+        <property name="documentEventHandler">
+            <bean class="com.github.spuchmann.xml.splitter.stax.XmlSurroundingNodeDocumentEventHandler">
+                <property name="node" ref="tagParentElement"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="globalValueFileStaxSplitter" class="com.github.spuchmann.xml.splitter.stax.FileStaxNodeSplitter"
+          init-method="init">
+        <property name="outputFolder" value="#{ T(com.google.common.io.Files).createTempDir().getAbsolutePath() }"/>
+        <property name="splittingNodeName" ref="tagElement"/>
+        <property name="globalDataCollectorNameList">
+            <list>
+                <ref bean="globalValue"/>
+                <ref bean="globalValue1"/>
+            </list>
+        </property>
+        <property name="documentEventHandler">
+            <bean class="com.github.spuchmann.xml.splitter.stax.XmlSurroundingNodeDocumentEventHandler">
+                <property name="node" ref="tagParentElement"/>
+                <property name="globalValueList">
+                    <list>
+                        <ref bean="globalValue1"/>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
