@@ -29,7 +29,7 @@ just use this library.
 Just look at the usage section to get a brief overview of how you can use xml-splitter.
 
 ## Latest release
-The most recent release is xml-splitter 0.1.0, released September 20, 2016.
+The most recent release is xml-splitter 0.2.0, released May 01, 2017.
 
 ### Maven
 
@@ -37,14 +37,14 @@ The most recent release is xml-splitter 0.1.0, released September 20, 2016.
 <dependency>
     <groupId>com.github.spucman</groupId>
     <artifactId>xml-splitter</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```gradle
-compile 'com.github.spucman:xml-splitter:0.1.0'
+compile 'com.github.spucman:xml-splitter:0.2.0'
 ```
 
 ### Manual
